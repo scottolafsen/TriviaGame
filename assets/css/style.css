@@ -1,7 +1,30 @@
 .container {
-    background-color: rgb(235, 171, 93);
+    background-color: rgb(247, 246, 244, 0.9);
 }
 
 h4:hover { 
     background-color: yellow;
+    cursor: pointer;
 }
+
+h4, h3 {
+    text-align: center;
+    border-bottom: 3px;
+    border-bottom-color: black;
+}
+
+.backgroundImage {
+    background-size: 100%;
+    height: 80%;
+ }
+ .jumbotron-fluid {
+     height: 100px;
+ }
+
+ .textbox {
+    margin-top: -65px;
+    margin-left: 120px;
+ }
+ #start-button {
+    margin-left: 52%;
+ }
