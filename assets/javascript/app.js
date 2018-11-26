@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     /// Main Game Trivia Content
     var questions = ["What is the Highest mountain in the Wasatch Mountains?", "The Confluence in Canyonlands National Park is the meeting of which two Utah Rivers?", "Kings Peak the highest in Utah is how many feet tall?", "Utahs famed Red Rock Desert is part of which physiographic region?", "Salt Lake City Utahs largest sits at 40.7 degrees north lattitude, roughly the same as which Eastern U.S city", "Utah is very dry, of the 50 states where does it rank in terms of driest", "The Uinta Range is the highest in Utah what is the second highest mountain range?", "Utah is known for its Native American rock art, this area has the highest concentration in North America", "Utah has many public lands, how many National Parks are located in the State?", "This famed canyon recieves over 500 inches of snow and is the home of Alta and Snowbird ski resorts"]
     var answerKey = ["Mt. Nebo", "Colorado and Green", "13,527", "Colorado Plateau", "New York City", "2nd", "La Sals", "Nine Mile Canyon", "5", "Little Cottonwood Canyon"]
@@ -27,30 +26,20 @@ $(document).ready(function () {
         startRound();
     });
 
-    /// Choose Answer Click Function
-    $(".choice").on("click", function () {
-        var text = $(event.target).text();
-        console.log(text);
-        if (text === answerKey[round]) {
-            console.log("true")
-            correctGuess();
-        }
-        else {
-            console.log("false")
-            wrongGuess();
-        }
-    });
-
-    /// Resets Round 
+    /// Starts Round 
     var startRound = function () {
         if (round > answerKey.length - 1) {
             gameOver();
             return
         }
+        // Sets Images based on Round Variable
         $(".left").attr("src", imageleft[round]);
         $(".right").attr("src", imageright[round]);
+        // Starts game timer
         run();
+        // Generates Question
         $("#question").html("<h3>" + questions[round] + "</h3>")
+        // Generates four answers to choose from
         for (i = (0 + forLoop); i < (4 + forLoop); i++) {
             var choice = $("<h4>");
             choice.text(answers[i]);
@@ -58,36 +47,53 @@ $(document).ready(function () {
         }
     }
 
-    /// Game Over no more questions
+    /// Game Over print final score
     var gameOver = function () {
         $("#question").html("<h3> Correct Answers: " + wins + "</h3>")
         $("#question").append("<h3> Wrong Answers: " + losses + "</h3>")
         $("#question").append("<h3> Timeouts: " + timeouts + "</h3>")
         $("#restart-button").show();
+        // Reset Game Variables
         round = 0;
         forLoop = 0;
         wins = 0;
         losses = 0;
         timeouts = 0;
     }
+    
+    /// Choose Answer Click Function
+    $(".choice").on("click", function () {
+        var text = $(event.target).text();
+        if (text === answerKey[round]) {
+            correctGuess();
+        }
+        else {
+            wrongGuess();
+        }
+    });
 
     /// Correct answer was clicked
     var correctGuess = function () {
-        $(".choice").empty();
         $("#question").html("<h3> You guessed the correct answer " + answerKey[round] + "! </h3>")
-        stop();
-        forLoop = forLoop + 4;
-        round++;
-        wins++;
-        timer = 26;
-        setTimeout(startRound, 1000 * 3);
+        updateGame();
     }
 
     /// Wrong answer was clicked
     var wrongGuess = function () {
-        $(".choice").empty();
         $("#question").html("<h3> Wrong! the correct answer is " + answerKey[round] + "</h3>")
+        updateGame();
+    }
+
+    /// Timeout occurred
+    var timeout = function() {
+        $("#question").html("<h3> Times up! The correct answer is " + answerKey[round] + "</h3>")
+        updateGame(); 
+    }
+    
+    /// Updates game for next round
+    var updateGame = function() {
         stop();
+        $(".choice").empty();
         forLoop = forLoop + 4;
         round++;
         losses++;
@@ -95,21 +101,24 @@ $(document).ready(function () {
         setTimeout(startRound, 1000 * 3);
     }
 
-    // Timer For Main Game Round Process
+    /// Timer For Main Game Round Process
+    // Initiate Timer
     var run = function () {
-        $("#timer").html("<h3>" + "Time Remaining " + timer + "</h3>");
+        $("#timer").html("<h3>" + "Time Remaining: " + timer + "</h3>");
         clearInterval(intervalId);
         intervalId = setInterval(decrement, 1000);
     }
+    // Game timer run functionality
     var decrement = function () {
         timer--;
-        $("#timer").html("<h3>" + "Time Remaining " + timer + "</h3>");
+        $("#timer").html("<h3>" + "Time Remaining: " + timer + "</h3>");
         if (timer === 0) {
             timeouts++;
             stop();
-            wrongGuess();
+            timeout();
         }
     }
+    // Resets timer
     var stop = function () {
         clearInterval(intervalId);
         $("#timer").empty();
