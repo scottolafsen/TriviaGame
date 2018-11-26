@@ -75,17 +75,20 @@ $(document).ready(function () {
     /// Correct answer was clicked
     var correctGuess = function () {
         $("#question").html("<h3> You guessed the correct answer " + answerKey[round] + "! </h3>")
+        wins++
         updateGame();
     }
 
     /// Wrong answer was clicked
     var wrongGuess = function () {
+        losses++
         $("#question").html("<h3> Wrong! the correct answer is " + answerKey[round] + "</h3>")
         updateGame();
     }
 
     /// Timeout occurred
     var timeout = function() {
+        timeouts++
         $("#question").html("<h3> Times up! The correct answer is " + answerKey[round] + "</h3>")
         updateGame(); 
     }
@@ -96,7 +99,6 @@ $(document).ready(function () {
         $(".choice").empty();
         forLoop = forLoop + 4;
         round++;
-        losses++;
         timer = 26;
         setTimeout(startRound, 1000 * 3);
     }
@@ -113,7 +115,6 @@ $(document).ready(function () {
         timer--;
         $("#timer").html("<h3>" + "Time Remaining: " + timer + "</h3>");
         if (timer === 0) {
-            timeouts++;
             stop();
             timeout();
         }
