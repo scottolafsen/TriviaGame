@@ -8,3 +8,5 @@
 #### Notes
 * Used a series of photos from the internet about half from my personal facebook account, all question content is from personal knowledge and research.
 * Continued to make use of a series of Arrays rather than Objects, would like to include more objects in future projects, but feels more natural to use arrays and for loops to acheive game functions currently.
+
+* Link to game! https://scottolafsen.github.io/TriviaGame/
